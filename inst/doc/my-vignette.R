@@ -15,8 +15,8 @@ value_weight_tensor@modes
 K = 2                     # The number of modes for the tensor time series
 n = 100                   # Length of time series.
 d = c(10,10)              # Dimensions of each mode of the tensor
-r = c(2,2)                # Rank of core tensors,
-re = 10                   # Dimension of the cross-sectional common error
+r = c(2,2)                # Rank of core tensors
+re = c(2,2)               # Rank of the cross-sectional common error core tensors
 eta = list(c(0,0),c(0,0)) # Control factor strengths in each factor loading matrix
 u = list(c(-2,2),c(-2,2)) # Control the range of elements in each factor loading matrix
 
@@ -30,7 +30,6 @@ E_ts = Data_test$E_ts
 
 X@modes
 F_ts@modes
-E_ts@modes
 dim(A[[1]])
 
 ## -----------------------------------------------------------------------------
@@ -45,6 +44,14 @@ Q_PRE_1 = pre_est(X)
 Q_PRE_1
 
 ## -----------------------------------------------------------------------------
+set.seed(7)
+pre_eigenplot(X, k = 2)
+
+## -----------------------------------------------------------------------------
+set.seed(10)
+pre_est(X, eigen_j = c(3,3))
+
+## -----------------------------------------------------------------------------
 set.seed(10)
 Q_PROJ_2 = iter_proj(X, initial_direction = Q_PRE_1, z = c(2,2))
 Q_PROJ_2
@@ -56,7 +63,12 @@ Q_PROJ_1
 
 ## -----------------------------------------------------------------------------
 set.seed(10)
-bs_rank = bs_cor_rank(X, Q_PROJ_1)
+bs_rank = bs_cor_rank(X, initial_direction = Q_PROJ_1)
+bs_rank
+
+## -----------------------------------------------------------------------------
+set.seed(10)
+bs_rank = bs_cor_rank(X, initial_direction = Q_PROJ_1, B = 10)
 bs_rank
 
 ## -----------------------------------------------------------------------------
